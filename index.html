@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento Odontológico</title>
+    <title>Agendamento Odontológico Premium</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -103,7 +103,7 @@
             box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.1);
         }
 
-        /* --- NOVOS ESTILOS: CARDS DE MOTIVO --- */
+        /* --- CARDS DE MOTIVO --- */
         .grid-motivos {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -139,7 +139,7 @@
 
         .card-motivo i { font-size: 1.8em; margin-bottom: 8px; display: block; }
         
-        /* --- NOVOS ESTILOS: ANAMNESE --- */
+        /* --- ANAMNESE --- */
         .anamnese-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -150,15 +150,9 @@
             border: 1px dashed var(--secondary-color);
         }
 
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            font-size: 0.9em;
-        }
-        
+        .checkbox-item { display: flex; align-items: center; font-size: 0.9em; }
         .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--primary-color); }
 
-        /* --- Radio Group Antigo --- */
         .radio-group { display: flex; gap: 20px; }
         .radio-group label { font-weight: normal; }
 
@@ -178,31 +172,15 @@
             box-shadow: 0 4px 15px rgba(139, 0, 0, 0.2);
         }
 
-        button:hover { 
-            background-color: #6A0000; 
-            transform: translateY(-2px);
-        }
+        button:hover { background-color: #6A0000; transform: translateY(-2px); }
 
-        /* Botão do WhatsApp */
         .btn-whatsapp {
-            display: block;
-            width: 100%;
-            background-color: var(--whatsapp-color);
-            color: white;
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s;
+            display: block; width: 100%; background-color: var(--whatsapp-color); color: white;
+            text-align: center; padding: 15px; border-radius: 8px; text-decoration: none;
+            font-weight: bold; margin-top: 15px; box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: all 0.3s;
         }
-        .btn-whatsapp:hover {
-            background-color: #1DA851;
-            transform: translateY(-2px);
-        }
+        .btn-whatsapp:hover { background-color: #1DA851; transform: translateY(-2px); }
 
         .btn-admin { background-color: #5d2e8e; box-shadow: 0 4px 15px rgba(93, 46, 142, 0.2); }
         .btn-resetar { background-color: var(--secondary-color); color: var(--dark-color); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
@@ -212,20 +190,39 @@
             border-left: 5px solid var(--primary-color); border-radius: 8px;
         }
 
-        .escondido { display: none; }
-        
-        /* Ocultar input original do motivo */
+        .escondido { display: none !important; }
         #input-motivo-hidden { display: none; }
 
-        /* Admin Styles */
+        /* --- ADMIN PANEL --- */
         #admin-panel { border: 2px dashed var(--secondary-color); padding: 20px; margin-top: 20px; border-radius: 8px; background-color: #fffaf0; }
-        #lista-horarios-admin li { background-color: #fff; padding: 8px 12px; border-radius: 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-        .btn-remover { background-color: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; margin-left: 15px; }
+        #lista-horarios-admin li, #lista-agendamentos-geral li { 
+            background-color: #fff; padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; 
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee;
+        }
+        
+        /* Botões pequenos de ação */
+        .acoes-btn { display: flex; gap: 5px; }
+        .btn-remover-mini { background-color: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; box-shadow: none; margin: 0; width: auto; }
+        .btn-editar-mini { background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; box-shadow: none; margin: 0; width: auto; }
+
+        /* --- MODAL DE EDIÇÃO --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background-color: white; padding: 30px; border-radius: 10px;
+            width: 90%; max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-fechar { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #aaa; padding: 0; margin: 0; width: auto; box-shadow: none;}
 
         /* Relatório Visual Hidden */
         #relatorio-para-imagem-container { position: absolute; left: -9999px; top: 0; }
         #relatorio-visual { width: 500px; background-color: #fff; border-radius: 8px; padding: 30px; font-family: 'Poppins', sans-serif; }
-        /* (Estilos do relatório iguais ao anterior) */
         #relatorio-visual .header { display: flex; align-items: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px; }
         #relatorio-visual .header-logo { font-size: 3em; margin-right: 15px; color: var(--secondary-color); }
         #relatorio-visual .card { display: flex; align-items: center; background-color: #fffaf0; border-left: 5px solid var(--primary-color); padding: 15px; border-radius: 5px; margin-top: 15px; }
@@ -235,7 +232,7 @@
 <body>
 
     <div class="container">
-        <h1><span>🦷</span> Dr. Marcia</h1>
+        <h1><span>🦷</span> Dr. Seu Nome</h1>
         <div class="welcome-text">
             <p>Olá! Que bom ter você aqui. Vamos cuidar do seu sorriso? <br>Preencha os dados abaixo para reservar seu horário exclusivo.</p>
         </div>
@@ -281,18 +278,10 @@
             <div class="campo">
                 <label>3. Informações de Saúde (Opcional):</label>
                 <div class="anamnese-grid">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="saude_diabetes" value="Diabético"> <label for="saude_diabetes">Diabetes</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="saude_hipertensao" value="Hipertenso"> <label for="saude_hipertensao">Pressão Alta</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="saude_alergia" value="Alergia a Medicamentos"> <label for="saude_alergia">Alergias</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="saude_cardiaco" value="Problemas Cardíacos"> <label for="saude_cardiaco">Cardíaco</label>
-                    </div>
+                    <div class="checkbox-item"><input type="checkbox" id="saude_diabetes"> <label>Diabetes</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="saude_hipertensao"> <label>Pressão Alta</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="saude_alergia"> <label>Alergias</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="saude_cardiaco"> <label>Cardíaco</label></div>
                 </div>
             </div>
 
@@ -315,21 +304,64 @@
         <button type="button" class="btn-admin" onclick="acessarAdmin()">Área do Dentista (Admin)</button>
         
         <div id="admin-panel" class="escondido">
-            <h2>Painel do Dentista</h2>
-            <div class="grid-admin" style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:20px;">
-                <div class="campo" style="margin:0"><label>Data</label><input type="date" id="admin-data"></div>
-                <div class="campo" style="margin:0"><label>Hora</label><input type="time" id="admin-hora"></div>
+            <h2>Painel de Controle</h2>
+            
+            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color); margin-top: 20px;">1. Adicionar Horários Livres</h3>
+            <div class="grid-admin" style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:10px;">
+                <div class="campo" style="margin:0"><input type="date" id="admin-data"></div>
+                <div class="campo" style="margin:0"><input type="time" id="admin-hora"></div>
                 <button onclick="adicionarHorarioDisponivel()" style="margin:0; height:100%;">Add</button>
             </div>
             <ul id="lista-horarios-admin" style="list-style: none; padding: 0;"></ul>
-            <hr>
-            <h3>Relatórios</h3>
+
+            <hr style="border-top: 1px dashed #ccc;">
+
+            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">2. Gerenciar Pacientes Agendados</h3>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Aqui você pode editar datas ou cancelar consultas.</p>
+            <ul id="lista-agendamentos-geral" style="list-style: none; padding: 0;"></ul>
+
+            <hr style="border-top: 1px dashed #ccc;">
+
+            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">3. Relatórios</h3>
             <div class="campo">
                 <input type="date" id="admin-relatorio-data">
                 <button onclick="gerarRelatorioImagem()" style="background-color: var(--secondary-color); color: var(--dark-color); margin-top: 10px;">Baixar Relatório do Dia (PNG)</button>
             </div>
+            
             <hr>
-            <button type="button" class="btn-resetar" onclick="limparAgendamentos()">Resetar Agenda Completa</button>
+            <button type="button" class="btn-resetar" onclick="limparAgendamentos()">Apagar TUDO (Reset Geral)</button>
+        </div>
+    </div>
+
+    <div id="modal-edicao" class="modal-overlay escondido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Agendamento</h3>
+                <button class="btn-fechar" onclick="fecharModal()">×</button>
+            </div>
+            <input type="hidden" id="edit-index">
+            
+            <div class="campo">
+                <label>Nome:</label>
+                <input type="text" id="edit-nome">
+            </div>
+            <div class="campo">
+                <label>Telefone:</label>
+                <input type="text" id="edit-telefone">
+            </div>
+            <div class="campo" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div><label>Data:</label><input type="date" id="edit-data"></div>
+                <div><label>Horário:</label><input type="time" id="edit-horario"></div>
+            </div>
+            <div class="campo">
+                <label>Motivo:</label>
+                <input type="text" id="edit-motivo">
+            </div>
+            <div class="campo">
+                <label>Obs. Saúde:</label>
+                <input type="text" id="edit-saude">
+            </div>
+            <button onclick="salvarEdicao()" style="background-color: var(--primary-color);">Salvar Alterações</button>
         </div>
     </div>
 
@@ -340,18 +372,14 @@
     <script>
         // --- LÓGICA DO SELETOR VISUAL ---
         function selecionarMotivo(elemento, valor) {
-            // Remove a classe 'selecionado' de todos os cards
             document.querySelectorAll('.card-motivo').forEach(card => card.classList.remove('selecionado'));
-            // Adiciona a classe apenas ao clicado
             elemento.classList.add('selecionado');
-            // Atualiza o input escondido
             document.getElementById('input-motivo-hidden').value = valor;
         }
 
         // --- INICIALIZAÇÃO ---
         window.onload = function() {
             if (document.getElementById('data-agendamento').value) { mostrarHorariosDisponiveis(); }
-            renderizarHorariosAdmin();
         };
 
         function iniciarFormulario() {
@@ -389,7 +417,6 @@
                 const horario = chaveHorario.split('_')[1];
                 const isAgendado = chavesAgendadas.includes(chaveHorario);
                 const radioId = `horario-${horario.replace(':', '')}`;
-                // Estilo simples para radio button
                 const radioHTML = `
                     <div style="margin-right:15px; margin-bottom:10px;">
                         <input type="radio" id="${radioId}" name="horario" value="${horario}" ${isAgendado ? 'disabled' : ''}>
@@ -405,17 +432,13 @@
             let nome, telefone;
             
             if (ehPacienteAntigo) {
-                nome = document.getElementById('nome_antigo').value; 
-                telefone = "Já cadastrado";
+                nome = document.getElementById('nome_antigo').value; telefone = "Já cadastrado";
             } else {
-                nome = document.getElementById('nome').value; 
-                telefone = document.getElementById('telefone').value;
+                nome = document.getElementById('nome').value; telefone = document.getElementById('telefone').value;
             }
 
-            // Pega o motivo do input hidden
             const motivo = document.getElementById('input-motivo-hidden').value;
 
-            // Pega anamnese
             let saudeInfo = [];
             if(document.getElementById('saude_diabetes').checked) saudeInfo.push("Diabético");
             if(document.getElementById('saude_hipertensao').checked) saudeInfo.push("Hipertenso");
@@ -426,16 +449,11 @@
             const dataSelecionada = document.getElementById('data-agendamento').value;
             const horarioSelecionado = document.querySelector('input[name="horario"]:checked');
 
-            // Validações
-            if (!nome) { alert("Por favor, preencha seu nome."); return; }
-            if (!motivo) { alert("Por favor, selecione o motivo da visita (clique nos cards)."); return; }
-            if (!dataSelecionada) { alert("Escolha uma data."); return; }
-            if (!horarioSelecionado) { alert("Escolha um horário."); return; }
+            if (!nome || !motivo || !dataSelecionada || !horarioSelecionado) { alert("Preencha todos os campos obrigatórios."); return; }
 
             const horario = horarioSelecionado.value;
             const chaveAgendamento = `${dataSelecionada}_${horario}`;
 
-            // Salva no LocalStorage
             let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
             const novoAgendamento = {
                 chave: chaveAgendamento, nome: nome, telefone: telefone, motivo: motivo, data: dataSelecionada, horario: horario, saude: textoSaude
@@ -443,18 +461,11 @@
             agendamentos.push(novoAgendamento);
             localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
 
-            // Formata Data
             const [ano, mes, dia] = dataSelecionada.split('-');
             const dataFormatada = `${dia}/${mes}/${ano}`;
-
-            // --- GERA LINK WHATSAPP ---
-            // Substitua o numero abaixo pelo SEU numero
             const seuNumeroWhatsApp = "5585999999999"; 
             
-            let textoZap = `Olá Dr(a)! Gostaria de confirmar meu agendamento.%0A`;
-            textoZap += `*Nome:* ${nome}%0A`;
-            textoZap += `*Data:* ${dataFormatada} às ${horario}%0A`;
-            textoZap += `*Motivo:* ${motivo}%0A`;
+            let textoZap = `Olá Dr(a)! Gostaria de confirmar meu agendamento.%0A*Nome:* ${nome}%0A*Data:* ${dataFormatada} às ${horario}%0A*Motivo:* ${motivo}%0A`;
             if(saudeInfo.length > 0) textoZap += `*Obs Saúde:* ${textoSaude}`;
 
             const linkZap = `https://wa.me/${seuNumeroWhatsApp}?text=${textoZap}`;
@@ -462,29 +473,25 @@
             const resumoHTML = `
                 <h3>Agendamento Confirmado!</h3>
                 <p><strong>Paciente:</strong> ${nome}</p>
-                <p><strong>Motivo:</strong> ${motivo}</p>
                 <p><strong>Data:</strong> ${dataFormatada} - ${horario}</p>
-                <p style="font-size:0.9em; color:#666;"><strong>Obs. Saúde:</strong> ${textoSaude}</p>
-                <hr>
-                <p>Para finalizar, envie a confirmação para nossa recepção:</p>
-                <a href="${linkZap}" target="_blank" class="btn-whatsapp">
-                    Enviar Confirmação no WhatsApp 📱
-                </a>
+                <a href="${linkZap}" target="_blank" class="btn-whatsapp">Enviar Confirmação no WhatsApp 📱</a>
             `;
             
             const resumoDiv = document.getElementById('resumo-agendamento');
             resumoDiv.innerHTML = resumoHTML;
             resumoDiv.classList.remove('escondido');
             mostrarHorariosDisponiveis();
-            
-            // Rola a tela para o resumo
             resumoDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
         // --- FUNÇÕES DE ADMINISTRAÇÃO ---
         function acessarAdmin() {
             const senha = prompt("Senha do Dentista:");
-            if (senha === "205021") { document.getElementById('admin-panel').classList.remove('escondido'); }
+            if (senha === "205021") { 
+                document.getElementById('admin-panel').classList.remove('escondido'); 
+                renderizarHorariosAdmin();
+                renderizarAgendamentosEditaveis(); // Nova função para listar pacientes
+            }
             else if (senha !== null) { alert("Senha incorreta."); }
         }
 
@@ -501,7 +508,7 @@
         }
 
         function removerHorario(chave) {
-            if (confirm("Remover este horário?")) {
+            if (confirm("Remover este horário disponível?")) {
                 let lista = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
                 lista = lista.filter(h => h !== chave);
                 localStorage.setItem('horariosDisponiveis', JSON.stringify(lista));
@@ -513,25 +520,110 @@
             const listaDiv = document.getElementById('lista-horarios-admin');
             listaDiv.innerHTML = '';
             const lista = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
-            if (lista.length === 0) { listaDiv.innerHTML = '<p>Sem horários cadastrados.</p>'; return; }
+            if (lista.length === 0) { listaDiv.innerHTML = '<p style="font-size:0.8em; color:#888;">Nenhum horário livre cadastrado.</p>'; return; }
             lista.forEach(chave => {
                 const [data, hora] = chave.split('_');
                 const [a, m, d] = data.split('-');
-                listaDiv.innerHTML += `<li>${d}/${m}/${a} às ${hora} <button class="btn-remover" onclick="removerHorario('${chave}')">X</button></li>`;
+                listaDiv.innerHTML += `<li>${d}/${m}/${a} às ${hora} <button class="btn-remover-mini" onclick="removerHorario('${chave}')">Remover</button></li>`;
             });
+        }
+
+        // --- NOVA LÓGICA DE EDIÇÃO E REAGENDAMENTO ---
+
+        function renderizarAgendamentosEditaveis() {
+            const listaDiv = document.getElementById('lista-agendamentos-geral');
+            listaDiv.innerHTML = '';
+            let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+            
+            // Ordena por data (mais recente primeiro)
+            agendamentos.sort((a, b) => new Date(a.data + 'T' + a.horario) - new Date(b.data + 'T' + b.horario));
+
+            if (agendamentos.length === 0) { listaDiv.innerHTML = '<p style="font-size:0.8em; color:#888;">Nenhum paciente agendado.</p>'; return; }
+
+            agendamentos.forEach((ag, index) => {
+                const [a, m, d] = ag.data.split('-');
+                const item = `
+                    <li>
+                        <div>
+                            <strong>${d}/${m}/${a} - ${ag.horario}</strong><br>
+                            <span style="font-size:0.9em;">${ag.nome} (${ag.motivo})</span>
+                        </div>
+                        <div class="acoes-btn">
+                            <button class="btn-editar-mini" onclick="abrirModalEdicao(${index})">✏️</button>
+                            <button class="btn-remover-mini" onclick="excluirAgendamento(${index})">🗑️</button>
+                        </div>
+                    </li>
+                `;
+                listaDiv.innerHTML += item;
+            });
+        }
+
+        function excluirAgendamento(index) {
+            if(confirm("Tem certeza que deseja apagar este agendamento?")){
+                let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+                agendamentos.splice(index, 1); // Remove o item pelo index
+                localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+                renderizarAgendamentosEditaveis(); // Atualiza a lista
+            }
+        }
+
+        function abrirModalEdicao(index) {
+            let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+            const ag = agendamentos[index];
+            
+            // Preenche o modal com os dados atuais
+            document.getElementById('edit-index').value = index;
+            document.getElementById('edit-nome').value = ag.nome;
+            document.getElementById('edit-telefone').value = ag.telefone;
+            document.getElementById('edit-data').value = ag.data;
+            document.getElementById('edit-horario').value = ag.horario;
+            document.getElementById('edit-motivo').value = ag.motivo;
+            document.getElementById('edit-saude').value = ag.saude || "";
+
+            // Abre o modal
+            document.getElementById('modal-edicao').classList.remove('escondido');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-edicao').classList.add('escondido');
+        }
+
+        function salvarEdicao() {
+            const index = document.getElementById('edit-index').value;
+            let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+            
+            const novaData = document.getElementById('edit-data').value;
+            const novoHorario = document.getElementById('edit-horario').value;
+            
+            // Atualiza os dados
+            agendamentos[index].nome = document.getElementById('edit-nome').value;
+            agendamentos[index].telefone = document.getElementById('edit-telefone').value;
+            agendamentos[index].data = novaData;
+            agendamentos[index].horario = novoHorario;
+            agendamentos[index].motivo = document.getElementById('edit-motivo').value;
+            agendamentos[index].saude = document.getElementById('edit-saude').value;
+            
+            // Atualiza a chave (importante para o sistema achar o bloqueio)
+            agendamentos[index].chave = `${novaData}_${novoHorario}`;
+
+            localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+            
+            alert("Agendamento atualizado com sucesso!");
+            fecharModal();
+            renderizarAgendamentosEditaveis();
         }
 
         function limparAgendamentos() {
             const senha = prompt("Senha Admin para resetar:");
             if (senha === "205021") {
-                if (confirm("Apagar TUDO?")) {
+                if (confirm("ISSO APAGARÁ TODOS OS PACIENTES AGENDADOS. Confirmar?")) {
                     localStorage.removeItem('agendamentos');
                     location.reload();
                 }
             }
         }
 
-        // --- GERAR RELATÓRIO IMAGEM (ATUALIZADO) ---
+        // --- RELATÓRIO IMAGEM ---
         function gerarRelatorioImagem() {
             const dataRel = document.getElementById('admin-relatorio-data').value;
             if (!dataRel) { alert("Selecione a data."); return; }
@@ -547,7 +639,6 @@
             
             let cardsHTML = '';
             doDia.forEach(ag => {
-                // Se o campo saude nao existir (agendamentos antigos), poe vazio
                 const saude = ag.saude || "Sem obs";
                 cardsHTML += `
                     <div class="card">
@@ -580,4 +671,3 @@
     </script>
 </body>
 </html>
-
