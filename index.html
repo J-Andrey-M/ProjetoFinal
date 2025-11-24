@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento Odontológico</title>
+    <title>Agendamento Odontológico Premium</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -174,21 +174,16 @@
 
         button:hover { background-color: #6A0000; transform: translateY(-2px); }
 
-        .btn-whatsapp {
-            display: block; width: 100%; background-color: var(--whatsapp-color); color: white;
-            text-align: center; padding: 15px; border-radius: 8px; text-decoration: none;
-            font-weight: bold; margin-top: 15px; box-sizing: border-box;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: all 0.3s;
-        }
-        .btn-whatsapp:hover { background-color: #1DA851; transform: translateY(-2px); }
-
         .btn-admin { background-color: #5d2e8e; box-shadow: 0 4px 15px rgba(93, 46, 142, 0.2); }
         .btn-resetar { background-color: var(--secondary-color); color: var(--dark-color); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
         
         #resumo-agendamento {
             margin-top: 30px; padding: 20px; background-color: #fffaf0; 
             border-left: 5px solid var(--primary-color); border-radius: 8px;
+            text-align: center;
         }
+        #resumo-agendamento h3 { color: var(--primary-color); }
+        #resumo-agendamento p { font-size: 1.1em; margin: 10px 0; }
 
         .escondido { display: none !important; }
         #input-motivo-hidden { display: none; }
@@ -204,6 +199,13 @@
         .acoes-btn { display: flex; gap: 5px; }
         .btn-remover-mini { background-color: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; box-shadow: none; margin: 0; width: auto; }
         .btn-editar-mini { background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; box-shadow: none; margin: 0; width: auto; }
+        
+        /* Novo Botão Zap no Admin */
+        .btn-zap-admin { 
+            background-color: var(--whatsapp-color); color: white; border: none; border-radius: 4px; 
+            cursor: pointer; padding: 5px 10px; font-size: 0.9em; box-shadow: none; margin: 0; width: auto; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-zap-admin:hover { background-color: #1DA851; }
 
         /* --- MODAL DE EDIÇÃO --- */
         .modal-overlay {
@@ -232,7 +234,7 @@
 <body>
 
     <div class="container">
-        <h1><span>🦷</span> Dr. Marcia</h1>
+        <h1><span>🦷</span> Dr. Seu Nome</h1>
         <div class="welcome-text">
             <p>Olá! Que bom ter você aqui. Vamos cuidar do seu sorriso? <br>Preencha os dados abaixo para reservar seu horário exclusivo.</p>
         </div>
@@ -317,7 +319,7 @@
             <hr style="border-top: 1px dashed #ccc;">
 
             <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">2. Gerenciar Pacientes Agendados</h3>
-            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Aqui você pode editar datas ou cancelar consultas.</p>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Clique no ícone do WhatsApp para confirmar com o paciente.</p>
             <ul id="lista-agendamentos-geral" style="list-style: none; padding: 0;"></ul>
 
             <hr style="border-top: 1px dashed #ccc;">
@@ -432,9 +434,11 @@
             let nome, telefone;
             
             if (ehPacienteAntigo) {
-                nome = document.getElementById('nome_antigo').value; telefone = "Já cadastrado";
+                nome = document.getElementById('nome_antigo').value; 
+                telefone = "Já cadastrado"; // Nota: Se for paciente antigo, idealmente você pegaria o telefone do banco de dados real.
             } else {
-                nome = document.getElementById('nome').value; telefone = document.getElementById('telefone').value;
+                nome = document.getElementById('nome').value; 
+                telefone = document.getElementById('telefone').value;
             }
 
             const motivo = document.getElementById('input-motivo-hidden').value;
@@ -463,18 +467,18 @@
 
             const [ano, mes, dia] = dataSelecionada.split('-');
             const dataFormatada = `${dia}/${mes}/${ano}`;
-            const seuNumeroWhatsApp = "5585999999999"; 
-            
-            let textoZap = `Olá Dr(a)! Gostaria de confirmar meu agendamento.%0A*Nome:* ${nome}%0A*Data:* ${dataFormatada} às ${horario}%0A*Motivo:* ${motivo}%0A`;
-            if(saudeInfo.length > 0) textoZap += `*Obs Saúde:* ${textoSaude}`;
 
-            const linkZap = `https://wa.me/${seuNumeroWhatsApp}?text=${textoZap}`;
-
+            // --- NOVA MENSAGEM PARA O PACIENTE (Mais amigável) ---
             const resumoHTML = `
-                <h3>Agendamento Confirmado!</h3>
-                <p><strong>Paciente:</strong> ${nome}</p>
-                <p><strong>Data:</strong> ${dataFormatada} - ${horario}</p>
-                <a href="${linkZap}" target="_blank" class="btn-whatsapp">Enviar Confirmação no WhatsApp 📱</a>
+                <div style="padding: 20px;">
+                    <h3 style="color: var(--whatsapp-color); font-size: 2em; margin-bottom: 10px;">Solicitação Recebida! 🎉</h3>
+                    <p>Olá, <strong>${nome}</strong>.</p>
+                    <p>Reservamos préviamente seu horário para <strong>${dataFormatada} às ${horario}</strong>.</p>
+                    <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
+                    <p style="font-weight: bold; color: var(--dark-color);">O que acontece agora?</p>
+                    <p>Fique tranquilo(a)! Nossa equipe de atendimento vai entrar em contato com você pelo WhatsApp em instantes para confirmar seu agendamento.</p>
+                    <p><em>Obrigado por confiar no nosso trabalho! 🦷</em></p>
+                </div>
             `;
             
             const resumoDiv = document.getElementById('resumo-agendamento');
@@ -490,7 +494,7 @@
             if (senha === "205021") { 
                 document.getElementById('admin-panel').classList.remove('escondido'); 
                 renderizarHorariosAdmin();
-                renderizarAgendamentosEditaveis(); // Nova função para listar pacientes
+                renderizarAgendamentosEditaveis(); 
             }
             else if (senha !== null) { alert("Senha incorreta."); }
         }
@@ -528,20 +532,36 @@
             });
         }
 
-        // --- NOVA LÓGICA DE EDIÇÃO E REAGENDAMENTO ---
-
+        // --- ADMIN: LISTA COM BOTÃO DE ZAP PARA O DENTISTA ---
         function renderizarAgendamentosEditaveis() {
             const listaDiv = document.getElementById('lista-agendamentos-geral');
             listaDiv.innerHTML = '';
             let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
             
-            // Ordena por data (mais recente primeiro)
             agendamentos.sort((a, b) => new Date(a.data + 'T' + a.horario) - new Date(b.data + 'T' + b.horario));
 
             if (agendamentos.length === 0) { listaDiv.innerHTML = '<p style="font-size:0.8em; color:#888;">Nenhum paciente agendado.</p>'; return; }
 
             agendamentos.forEach((ag, index) => {
                 const [a, m, d] = ag.data.split('-');
+                
+                // Limpa o telefone para o link (remove parenteses, traços e espaços)
+                const telLimpo = ag.telefone ? ag.telefone.replace(/\D/g, '') : '';
+                
+                // Mensagem cordial para o dentista enviar
+                const saudacao = "Olá " + ag.nome + ", tudo bem? 👋";
+                const corpo = "Aqui é da equipe do Dr. Seu Nome. Recebemos sua solicitação de agendamento para o dia " + d + "/" + m + " às " + ag.horario + ".";
+                const pergunta = "Podemos confirmar este horário?";
+                const msgFinal = encodeURIComponent(`${saudacao}\n${corpo}\n${pergunta}`);
+                
+                // Verifica se tem telefone válido para criar o link
+                let btnZapHTML = '';
+                if (telLimpo.length >= 10) {
+                    btnZapHTML = `<a href="https://wa.me/55${telLimpo}?text=${msgFinal}" target="_blank" class="btn-zap-admin" title="Confirmar pelo WhatsApp">📱 Confirmar</a>`;
+                } else {
+                    btnZapHTML = `<span style="font-size:0.8em; color:#999;">(Sem Zap)</span>`;
+                }
+
                 const item = `
                     <li>
                         <div>
@@ -549,8 +569,9 @@
                             <span style="font-size:0.9em;">${ag.nome} (${ag.motivo})</span>
                         </div>
                         <div class="acoes-btn">
-                            <button class="btn-editar-mini" onclick="abrirModalEdicao(${index})">✏️</button>
-                            <button class="btn-remover-mini" onclick="excluirAgendamento(${index})">🗑️</button>
+                            ${btnZapHTML}
+                            <button class="btn-editar-mini" onclick="abrirModalEdicao(${index})" title="Editar">✏️</button>
+                            <button class="btn-remover-mini" onclick="excluirAgendamento(${index})" title="Excluir">🗑️</button>
                         </div>
                     </li>
                 `;
@@ -561,17 +582,15 @@
         function excluirAgendamento(index) {
             if(confirm("Tem certeza que deseja apagar este agendamento?")){
                 let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-                agendamentos.splice(index, 1); // Remove o item pelo index
+                agendamentos.splice(index, 1);
                 localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
-                renderizarAgendamentosEditaveis(); // Atualiza a lista
+                renderizarAgendamentosEditaveis();
             }
         }
 
         function abrirModalEdicao(index) {
             let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
             const ag = agendamentos[index];
-            
-            // Preenche o modal com os dados atuais
             document.getElementById('edit-index').value = index;
             document.getElementById('edit-nome').value = ag.nome;
             document.getElementById('edit-telefone').value = ag.telefone;
@@ -579,8 +598,6 @@
             document.getElementById('edit-horario').value = ag.horario;
             document.getElementById('edit-motivo').value = ag.motivo;
             document.getElementById('edit-saude').value = ag.saude || "";
-
-            // Abre o modal
             document.getElementById('modal-edicao').classList.remove('escondido');
         }
 
@@ -591,23 +608,16 @@
         function salvarEdicao() {
             const index = document.getElementById('edit-index').value;
             let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-            
             const novaData = document.getElementById('edit-data').value;
             const novoHorario = document.getElementById('edit-horario').value;
-            
-            // Atualiza os dados
             agendamentos[index].nome = document.getElementById('edit-nome').value;
             agendamentos[index].telefone = document.getElementById('edit-telefone').value;
             agendamentos[index].data = novaData;
             agendamentos[index].horario = novoHorario;
             agendamentos[index].motivo = document.getElementById('edit-motivo').value;
             agendamentos[index].saude = document.getElementById('edit-saude').value;
-            
-            // Atualiza a chave (importante para o sistema achar o bloqueio)
             agendamentos[index].chave = `${novaData}_${novoHorario}`;
-
             localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
-            
             alert("Agendamento atualizado com sucesso!");
             fecharModal();
             renderizarAgendamentosEditaveis();
