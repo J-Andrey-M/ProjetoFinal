@@ -190,7 +190,8 @@
 
         /* --- ADMIN PANEL --- */
         #admin-panel { border: 2px dashed var(--secondary-color); padding: 20px; margin-top: 20px; border-radius: 8px; background-color: #fffaf0; }
-        #lista-horarios-admin li, #lista-agendamentos-geral li { 
+        
+        #lista-horarios-admin li, #lista-agendamentos-geral li, #lista-banco-pacientes li { 
             background-color: #fff; padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; 
             display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee;
         }
@@ -206,6 +207,16 @@
             cursor: pointer; padding: 5px 10px; font-size: 0.9em; box-shadow: none; margin: 0; width: auto; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
         }
         .btn-zap-admin:hover { background-color: #1DA851; }
+
+        /* Estilo da lista de Marketing (scroll se tiver mtos) */
+        .marketing-list-container {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 5px;
+            background-color: white;
+        }
 
         /* --- MODAL DE EDIÇÃO --- */
         .modal-overlay {
@@ -319,12 +330,20 @@
             <hr style="border-top: 1px dashed #ccc;">
 
             <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">2. Gerenciar Pacientes Agendados</h3>
-            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Clique no botão "WhatsApp" para enviar a mensagem personalizada.</p>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Pacientes com consulta marcada (Futuro/Hoje).</p>
             <ul id="lista-agendamentos-geral" style="list-style: none; padding: 0;"></ul>
 
             <hr style="border-top: 1px dashed #ccc;">
 
-            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">3. Relatórios</h3>
+            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">3. Banco de Pacientes (Marketing)</h3>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Lista única de todos que já agendaram. Use para novos contatos.</p>
+            <div class="marketing-list-container">
+                <ul id="lista-banco-pacientes" style="list-style: none; padding: 0;"></ul>
+            </div>
+
+            <hr style="border-top: 1px dashed #ccc;">
+
+            <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">4. Relatórios</h3>
             <div class="campo">
                 <input type="date" id="admin-relatorio-data">
                 <button onclick="gerarRelatorioImagem()" style="background-color: var(--secondary-color); color: var(--dark-color); margin-top: 10px;">Baixar Relatório do Dia (PNG)</button>
@@ -468,7 +487,6 @@
             const [ano, mes, dia] = dataSelecionada.split('-');
             const dataFormatada = `${dia}/${mes}/${ano}`;
 
-            // --- MENSAGEM FINAL PARA O PACIENTE ---
             const resumoHTML = `
                 <div style="padding: 20px;">
                     <h3 style="color: var(--whatsapp-color); font-size: 2em; margin-bottom: 10px;">Solicitação Recebida! 🎉</h3>
@@ -495,6 +513,7 @@
                 document.getElementById('admin-panel').classList.remove('escondido'); 
                 renderizarHorariosAdmin();
                 renderizarAgendamentosEditaveis(); 
+                renderizarBancoPacientes(); // NOVA FUNÇÃO AQUI
             }
             else if (senha !== null) { alert("Senha incorreta."); }
         }
@@ -532,7 +551,6 @@
             });
         }
 
-        // --- MENSAGENS PERSONALIZADAS DA DRA. MARCIA ---
         function renderizarAgendamentosEditaveis() {
             const listaDiv = document.getElementById('lista-agendamentos-geral');
             listaDiv.innerHTML = '';
@@ -546,24 +564,16 @@
                 const [a, m, d] = ag.data.split('-');
                 const telLimpo = ag.telefone ? ag.telefone.replace(/\D/g, '') : '';
                 
-                // --- LÓGICA DE MENSAGENS INTELIGENTES ---
                 let mensagem = "";
                 const saudacao = `Oi ${ag.nome}, aqui é a Dra. Marcia! 👩‍⚕️`;
 
                 if (ag.motivo.includes("Dor") || ag.motivo.includes("Emergência")) {
-                    // URGÊNCIA (Acolhedora e Rápida)
                     mensagem = `${saudacao}\nVi que você marcou uma emergência. Aqui é a Dra. Marcia e vamos cuidar desse problema para aliviar o mais rápido possível.\nPosso confirmar seu horário no dia ${d}/${m} às ${ag.horario}?`;
-                
                 } else if (ag.motivo.includes("Estética") || ag.motivo.includes("Clareamento")) {
-                    // ESTÉTICA (Animada e Autoestima)
                     mensagem = `${saudacao}\nAdorei que você agendou para cuidar da estética! Vamos deixar esse sorriso brilhando. ✨\nPosso confirmar nosso horário no dia ${d}/${m} às ${ag.horario}?`;
-                
                 } else if (ag.motivo.includes("Limpeza") || ag.motivo.includes("Rotina")) {
-                    // PREVENÇÃO (Parabenizando o cuidado)
                     mensagem = `${saudacao}\nRecebi seu agendamento para limpeza. É muito bom manter a saúde em dia! Vamos confirmar para deixar tudo 100%?\nFicou para dia ${d}/${m} às ${ag.horario}.`;
-                
                 } else {
-                    // PADRÃO / AVALIAÇÃO (Simpática)
                     mensagem = `${saudacao}\nVi que você agendou uma avaliação. Vai ser um prazer te receber para a gente conversar e ver o melhor para o seu sorriso.\nPosso confirmar para o dia ${d}/${m} às ${ag.horario}?`;
                 }
 
@@ -590,6 +600,46 @@
                     </li>
                 `;
                 listaDiv.innerHTML += item;
+            });
+        }
+
+        // --- NOVA FUNÇÃO: BANCO DE PACIENTES (MARKETING) ---
+        function renderizarBancoPacientes() {
+            const listaDiv = document.getElementById('lista-banco-pacientes');
+            listaDiv.innerHTML = '';
+            const todos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+
+            // Usar um Map para garantir que cada telefone apareça apenas UMA VEZ
+            const pacientesUnicos = new Map();
+
+            todos.forEach(p => {
+                const telLimpo = p.telefone ? p.telefone.replace(/\D/g, '') : '';
+                if(telLimpo.length >= 8) {
+                    if(!pacientesUnicos.has(telLimpo)) {
+                        pacientesUnicos.set(telLimpo, { nome: p.nome, telefone: p.telefone, rawTel: telLimpo });
+                    }
+                }
+            });
+
+            if (pacientesUnicos.size === 0) {
+                listaDiv.innerHTML = '<p style="font-size:0.8em; color:#888;">Nenhum histórico de pacientes encontrado.</p>';
+                return;
+            }
+
+            pacientesUnicos.forEach((paciente) => {
+                // Mensagem de "Oi Sumido"
+                const msg = `Olá ${paciente.nome}, aqui é a Dra. Marcia! Faz um tempo que não nos vemos. Como está esse sorriso? 😄 Estou passando para saber se precisa de algo!`;
+                const linkZap = `https://wa.me/55${paciente.rawTel}?text=${encodeURIComponent(msg)}`;
+
+                listaDiv.innerHTML += `
+                    <li>
+                        <div>
+                            <strong>${paciente.nome}</strong><br>
+                            <span style="font-size: 0.8em; color: #666;">${paciente.telefone}</span>
+                        </div>
+                        <a href="${linkZap}" target="_blank" class="btn-zap-admin" style="font-size: 0.8em; background-color: #2c3e50;">👋 Oi</a>
+                    </li>
+                `;
             });
         }
 
