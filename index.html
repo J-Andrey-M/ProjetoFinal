@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento Odontológico Premium</title>
+    <title>Agendamento Dra. Marcia</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -234,7 +234,7 @@
 <body>
 
     <div class="container">
-        <h1><span>🦷</span> Dr. Seu Nome</h1>
+        <h1><span>🦷</span> Dra. Marcia</h1>
         <div class="welcome-text">
             <p>Olá! Que bom ter você aqui. Vamos cuidar do seu sorriso? <br>Preencha os dados abaixo para reservar seu horário exclusivo.</p>
         </div>
@@ -319,7 +319,7 @@
             <hr style="border-top: 1px dashed #ccc;">
 
             <h3 style="text-align: left; font-size: 1.1em; color: var(--secondary-color);">2. Gerenciar Pacientes Agendados</h3>
-            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Clique no ícone do WhatsApp para confirmar com o paciente.</p>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">Clique no botão "WhatsApp" para enviar a mensagem personalizada.</p>
             <ul id="lista-agendamentos-geral" style="list-style: none; padding: 0;"></ul>
 
             <hr style="border-top: 1px dashed #ccc;">
@@ -435,7 +435,7 @@
             
             if (ehPacienteAntigo) {
                 nome = document.getElementById('nome_antigo').value; 
-                telefone = "Já cadastrado"; // Nota: Se for paciente antigo, idealmente você pegaria o telefone do banco de dados real.
+                telefone = "Já cadastrado";
             } else {
                 nome = document.getElementById('nome').value; 
                 telefone = document.getElementById('telefone').value;
@@ -468,7 +468,7 @@
             const [ano, mes, dia] = dataSelecionada.split('-');
             const dataFormatada = `${dia}/${mes}/${ano}`;
 
-            // --- NOVA MENSAGEM PARA O PACIENTE (Mais amigável) ---
+            // --- MENSAGEM FINAL PARA O PACIENTE ---
             const resumoHTML = `
                 <div style="padding: 20px;">
                     <h3 style="color: var(--whatsapp-color); font-size: 2em; margin-bottom: 10px;">Solicitação Recebida! 🎉</h3>
@@ -476,7 +476,7 @@
                     <p>Reservamos préviamente seu horário para <strong>${dataFormatada} às ${horario}</strong>.</p>
                     <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
                     <p style="font-weight: bold; color: var(--dark-color);">O que acontece agora?</p>
-                    <p>Fique tranquilo(a)! Nossa equipe de atendimento vai entrar em contato com você pelo WhatsApp em instantes para confirmar seu agendamento.</p>
+                    <p>Fique tranquilo(a)! A <strong>Dra. Marcia</strong> vai entrar em contato com você pelo WhatsApp em instantes para confirmar seu agendamento.</p>
                     <p><em>Obrigado por confiar no nosso trabalho! 🦷</em></p>
                 </div>
             `;
@@ -532,7 +532,7 @@
             });
         }
 
-        // --- ADMIN: LISTA COM BOTÃO DE ZAP PARA O DENTISTA ---
+        // --- MENSAGENS PERSONALIZADAS DA DRA. MARCIA ---
         function renderizarAgendamentosEditaveis() {
             const listaDiv = document.getElementById('lista-agendamentos-geral');
             listaDiv.innerHTML = '';
@@ -544,20 +544,34 @@
 
             agendamentos.forEach((ag, index) => {
                 const [a, m, d] = ag.data.split('-');
-                
-                // Limpa o telefone para o link (remove parenteses, traços e espaços)
                 const telLimpo = ag.telefone ? ag.telefone.replace(/\D/g, '') : '';
                 
-                // Mensagem cordial para o dentista enviar
-                const saudacao = "Olá " + ag.nome + ", tudo bem? 👋";
-                const corpo = "Aqui é da equipe do Dr. Seu Nome. Recebemos sua solicitação de agendamento para o dia " + d + "/" + m + " às " + ag.horario + ".";
-                const pergunta = "Podemos confirmar este horário?";
-                const msgFinal = encodeURIComponent(`${saudacao}\n${corpo}\n${pergunta}`);
+                // --- LÓGICA DE MENSAGENS INTELIGENTES ---
+                let mensagem = "";
+                const saudacao = `Oi ${ag.nome}, aqui é a Dra. Marcia! 👩‍⚕️`;
+
+                if (ag.motivo.includes("Dor") || ag.motivo.includes("Emergência")) {
+                    // URGÊNCIA (Acolhedora e Rápida)
+                    mensagem = `${saudacao}\nVi que você marcou uma emergência. Aqui é a Dra. Marcia e vamos cuidar desse problema para aliviar o mais rápido possível.\nPosso confirmar seu horário no dia ${d}/${m} às ${ag.horario}?`;
                 
-                // Verifica se tem telefone válido para criar o link
+                } else if (ag.motivo.includes("Estética") || ag.motivo.includes("Clareamento")) {
+                    // ESTÉTICA (Animada e Autoestima)
+                    mensagem = `${saudacao}\nAdorei que você agendou para cuidar da estética! Vamos deixar esse sorriso brilhando. ✨\nPosso confirmar nosso horário no dia ${d}/${m} às ${ag.horario}?`;
+                
+                } else if (ag.motivo.includes("Limpeza") || ag.motivo.includes("Rotina")) {
+                    // PREVENÇÃO (Parabenizando o cuidado)
+                    mensagem = `${saudacao}\nRecebi seu agendamento para limpeza. É muito bom manter a saúde em dia! Vamos confirmar para deixar tudo 100%?\nFicou para dia ${d}/${m} às ${ag.horario}.`;
+                
+                } else {
+                    // PADRÃO / AVALIAÇÃO (Simpática)
+                    mensagem = `${saudacao}\nVi que você agendou uma avaliação. Vai ser um prazer te receber para a gente conversar e ver o melhor para o seu sorriso.\nPosso confirmar para o dia ${d}/${m} às ${ag.horario}?`;
+                }
+
+                const msgFinal = encodeURIComponent(mensagem);
+                
                 let btnZapHTML = '';
                 if (telLimpo.length >= 10) {
-                    btnZapHTML = `<a href="https://wa.me/55${telLimpo}?text=${msgFinal}" target="_blank" class="btn-zap-admin" title="Confirmar pelo WhatsApp">📱 Confirmar</a>`;
+                    btnZapHTML = `<a href="https://wa.me/55${telLimpo}?text=${msgFinal}" target="_blank" class="btn-zap-admin" title="Enviar msg personalizada">💬 WhatsApp</a>`;
                 } else {
                     btnZapHTML = `<span style="font-size:0.8em; color:#999;">(Sem Zap)</span>`;
                 }
@@ -633,7 +647,6 @@
             }
         }
 
-        // --- RELATÓRIO IMAGEM ---
         function gerarRelatorioImagem() {
             const dataRel = document.getElementById('admin-relatorio-data').value;
             if (!dataRel) { alert("Selecione a data."); return; }
@@ -665,7 +678,7 @@
             container.innerHTML = `
                 <div class="header">
                     <div class="header-logo">🦷</div>
-                    <div class="header-title"><h2>Agenda do Dia</h2><p>Dr. Seu Nome</p></div>
+                    <div class="header-title"><h2>Agenda do Dia</h2><p>Dra. Marcia</p></div>
                     <div class="header-date"><h3>${dataObj.toLocaleDateString('pt-BR')}</h3></div>
                 </div>
                 ${cardsHTML}
