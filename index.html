@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento Odontológico</title>
+    <title>Agendamento Odontológico Premium</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* ... (seu CSS continua o mesmo) ... */
+        /* --- DESIGN COM PALETA DA LOGO --- */
+        :root {
+            --primary-color: #8B0000;       /* Vermelho/Vinho */
+            --secondary-color: #D4AF37;     /* Dourado */
+            --dark-color: #4A0505;          
+            --light-gray: #f8fafc;
+            --whatsapp-color: #25D366;      /* Verde do Zap */
+            --background-gradient: linear-gradient(to right top, #fffaf0, #fdf5e6);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background-image: var(--background-gradient);
+            color: var(--dark-color);
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -20,86 +33,213 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(139, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
             margin-bottom: 20px;
         }
-        h1, h2, h3 {
-            color: #2c3e50;
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        h1 span { margin-right: 15px; font-size: 1.2em; color: var(--primary-color); }
+
+        .welcome-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        h2, h3 {
+            color: var(--dark-color);
             text-align: center;
             margin-bottom: 25px;
+            font-weight: 600;
         }
-        .campo { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; }
-        input[type="text"], input[type="date"], input[type="time"], select {
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
-        }
-        .radio-group label { font-weight: normal; margin-right: 15px; }
-        input[type="radio"]:disabled + label { color: #aaa; text-decoration: line-through; cursor: not-allowed; }
-        button {
-            width: 100%; padding: 15px; background-color: #3498db; color: white; border: none;
-            border-radius: 5px; font-size: 1.1em; cursor: pointer; transition: background-color 0.3s; margin-top: 10px;
-        }
-        button:hover { background-color: #2980b9; }
-        .btn-resetar { background-color: #e74c3c; }
-        .btn-resetar:hover { background-color: #c0392b; }
-        .btn-admin { background-color: #9b59b6; }
-        .btn-admin:hover { background-color: #8e44ad; }
-        .btn-remover {
-            background-color: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;
-            padding: 5px 10px; font-size: 0.8em; margin-left: 15px;
-        }
-        #resumo-agendamento {
-            margin-top: 30px; padding: 20px; background-color: #eaf2f8; border-left: 5px solid #3498db; border-radius: 5px;
-        }
-        #lista-horarios { padding: 10px; background-color: #f9f9f9; border: 1px solid #eee; border-radius: 5px; }
-        #admin-panel {
-            border: 2px dashed #9b59b6; padding: 20px; margin-top: 20px; border-radius: 8px; background-color: #f9f5fb;
-        }
-        #admin-panel .grid-admin { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: flex-end; }
-        #lista-horarios-admin li {
-            background-color: #fff; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .escondido { display: none; }
 
-        /* PASSO 2: Estilos para o relatório que será capturado */
-        #relatorio-para-imagem-container {
-            position: absolute;
-            left: -9999px; /* Posiciona fora da tela para não ser visível */
-            top: 0;
-            background-color: #f4f7f6;
-            padding: 20px;
+        .campo { margin-bottom: 25px; }
+
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+            font-size: 0.95em;
         }
-        #relatorio-visual {
-            width: 500px; /* Largura fixa para a imagem */
-            background-color: #fff;
+
+        input[type="text"], input[type="date"], input[type="time"], select {
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            background-color: var(--light-gray);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.1);
+        }
+
+        /* --- NOVOS ESTILOS: CARDS DE MOTIVO --- */
+        .grid-motivos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .card-motivo {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-motivo:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-motivo.selecionado {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .card-motivo i { font-size: 1.8em; margin-bottom: 8px; display: block; }
+        
+        /* --- NOVOS ESTILOS: ANAMNESE --- */
+        .anamnese-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background-color: #fffaf0;
+            padding: 15px;
             border-radius: 8px;
-            padding: 30px;
-            font-family: Arial, sans-serif;
+            border: 1px dashed var(--secondary-color);
         }
-        #relatorio-visual .header { display: flex; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 15px; }
-        #relatorio-visual .header-logo { font-size: 3em; margin-right: 15px; color: #3498db; }
-        #relatorio-visual .header-title h2, #relatorio-visual .header-title p { margin: 0; color: #2c3e50; }
-        #relatorio-visual .header-date { margin-left: auto; text-align: right; }
-        #relatorio-visual .header-date h3, #relatorio-visual .header-date p { margin: 0; color: #2c3e50; }
-        #relatorio-visual .card {
-            display: flex; align-items: center; background-color: #f9f9f9; border-left: 5px solid #3498db;
-            padding: 15px; border-radius: 5px; margin-top: 15px;
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
         }
-        #relatorio-visual .card .horario { font-size: 1.5em; font-weight: bold; color: #2c3e50; margin-right: 20px; }
-        #relatorio-visual .card .info h4, #relatorio-visual .card .info p { margin: 0 0 5px 0; }
+        
+        .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--primary-color); }
+
+        /* --- Radio Group Antigo --- */
+        .radio-group { display: flex; gap: 20px; }
+        .radio-group label { font-weight: normal; }
+
+        button {
+            width: 100%; 
+            padding: 15px; 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none;
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.2);
+        }
+
+        button:hover { 
+            background-color: #6A0000; 
+            transform: translateY(-2px);
+        }
+
+        /* Botão do WhatsApp */
+        .btn-whatsapp {
+            display: block;
+            width: 100%;
+            background-color: var(--whatsapp-color);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1DA851;
+            transform: translateY(-2px);
+        }
+
+        .btn-admin { background-color: #5d2e8e; box-shadow: 0 4px 15px rgba(93, 46, 142, 0.2); }
+        .btn-resetar { background-color: var(--secondary-color); color: var(--dark-color); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
+        
+        #resumo-agendamento {
+            margin-top: 30px; padding: 20px; background-color: #fffaf0; 
+            border-left: 5px solid var(--primary-color); border-radius: 8px;
+        }
+
+        .escondido { display: none; }
+        
+        /* Ocultar input original do motivo */
+        #input-motivo-hidden { display: none; }
+
+        /* Admin Styles */
+        #admin-panel { border: 2px dashed var(--secondary-color); padding: 20px; margin-top: 20px; border-radius: 8px; background-color: #fffaf0; }
+        #lista-horarios-admin li { background-color: #fff; padding: 8px 12px; border-radius: 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-remover { background-color: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer; padding: 5px 10px; font-size: 0.8em; margin-left: 15px; }
+
+        /* Relatório Visual Hidden */
+        #relatorio-para-imagem-container { position: absolute; left: -9999px; top: 0; }
+        #relatorio-visual { width: 500px; background-color: #fff; border-radius: 8px; padding: 30px; font-family: 'Poppins', sans-serif; }
+        /* (Estilos do relatório iguais ao anterior) */
+        #relatorio-visual .header { display: flex; align-items: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px; }
+        #relatorio-visual .header-logo { font-size: 3em; margin-right: 15px; color: var(--secondary-color); }
+        #relatorio-visual .card { display: flex; align-items: center; background-color: #fffaf0; border-left: 5px solid var(--primary-color); padding: 15px; border-radius: 5px; margin-top: 15px; }
+        #relatorio-visual .card .horario { font-size: 1.5em; font-weight: bold; color: var(--dark-color); margin-right: 20px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🦷 Agendamento Rápido Odontológico</h1>
+        <h1><span>🦷</span> Dr. Seu Nome</h1>
+        <div class="welcome-text">
+            <p>Olá! Que bom ter você aqui. Vamos cuidar do seu sorriso? <br>Preencha os dados abaixo para reservar seu horário exclusivo.</p>
+        </div>
+
         <div class="campo">
             <label>1. Você já é nosso paciente?</label>
             <div class="radio-group">
@@ -109,131 +249,111 @@
                 <label for="paciente_nao">Não</label>
             </div>
         </div>
+
         <div id="formulario-principal" class="escondido">
             <div id="dados-paciente-novo" class="escondido">
-                <div class="campo"><label for="nome">Seu nome completo:</label><input type="text" id="nome"></div>
-                <div class="campo"><label for="telefone">Seu telefone para contato:</label><input type="text" id="telefone"></div>
+                <div class="campo"><label for="nome">Seu nome completo:</label><input type="text" id="nome" placeholder="Digite seu nome"></div>
+                <div class="campo"><label for="telefone">Seu WhatsApp (com DDD):</label><input type="text" id="telefone" placeholder="(XX) 9XXXX-XXXX"></div>
             </div>
             <div id="dados-paciente-antigo" class="escondido">
-                 <div class="campo"><label for="nome_antigo">Confirme seu nome completo:</label><input type="text" id="nome_antigo"></div>
+                 <div class="campo"><label for="nome_antigo">Confirme seu nome completo:</label><input type="text" id="nome_antigo" placeholder="Digite seu nome"></div>
             </div>
+
             <div class="campo">
-                <label for="motivo">2. Qual o motivo da sua consulta?</label>
-                <select id="motivo">
-                    <option value="emergencia">Emergência</option><option value="rotina">Rotina / Check-up</option>
-                    <option value="limpeza">Limpeza</option><option value="avaliacao">Avaliação</option>
-                </select>
+                <label>2. Qual o motivo da sua visita?</label>
+                <div class="grid-motivos">
+                    <div class="card-motivo" onclick="selecionarMotivo(this, 'Dor / Emergência')">
+                        <i>🤕</i> <span>Dor / Emergência</span>
+                    </div>
+                    <div class="card-motivo" onclick="selecionarMotivo(this, 'Limpeza / Rotina')">
+                        <i>✨</i> <span>Limpeza / Rotina</span>
+                    </div>
+                    <div class="card-motivo" onclick="selecionarMotivo(this, 'Avaliação')">
+                        <i>🔍</i> <span>Avaliação Geral</span>
+                    </div>
+                    <div class="card-motivo" onclick="selecionarMotivo(this, 'Estética / Clareamento')">
+                        <i>💎</i> <span>Estética</span>
+                    </div>
+                </div>
+                <input type="text" id="input-motivo-hidden" readonly>
             </div>
+
             <div class="campo">
-                <label for="data-agendamento">3. Escolha a Data do Agendamento:</label>
+                <label>3. Informações de Saúde (Opcional):</label>
+                <div class="anamnese-grid">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="saude_diabetes" value="Diabético"> <label for="saude_diabetes">Diabetes</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="saude_hipertensao" value="Hipertenso"> <label for="saude_hipertensao">Pressão Alta</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="saude_alergia" value="Alergia a Medicamentos"> <label for="saude_alergia">Alergias</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="saude_cardiaco" value="Problemas Cardíacos"> <label for="saude_cardiaco">Cardíaco</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="data-agendamento">4. Escolha a Data:</label>
                 <input type="date" id="data-agendamento" onchange="mostrarHorariosDisponiveis()">
             </div>
+
             <div id="horarios-container" class="campo escondido">
-                <label>4. Escolha um horário disponível:</label>
-                <div id="lista-horarios" class="radio-group"></div>
+                <label>5. Escolha um horário disponível:</label>
+                <div id="lista-horarios" class="radio-group" style="flex-wrap: wrap;"></div>
             </div>
+
             <button type="button" onclick="gerarResumo()">Confirmar Agendamento</button>
         </div>
+
         <div id="resumo-agendamento" class="escondido"></div>
-        <hr style="margin: 30px 0;">
-        <button type="button" class="btn-admin" onclick="acessarAdmin()">Gerenciar Horários Disponíveis</button>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--border-color);">
+        <button type="button" class="btn-admin" onclick="acessarAdmin()">Área do Dentista (Admin)</button>
+        
         <div id="admin-panel" class="escondido">
-            <h2>Painel do Administrador</h2>
-            <h3>Cadastrar Horários</h3>
-            <div class="grid-admin">
-                <div class="campo"><label for="admin-data">Data</label><input type="date" id="admin-data"></div>
-                <div class="campo"><label for="admin-hora">Hora</label><input type="time" id="admin-hora"></div>
-                <button onclick="adicionarHorarioDisponivel()">Adicionar</button>
+            <h2>Painel do Dentista</h2>
+            <div class="grid-admin" style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:20px;">
+                <div class="campo" style="margin:0"><label>Data</label><input type="date" id="admin-data"></div>
+                <div class="campo" style="margin:0"><label>Hora</label><input type="time" id="admin-hora"></div>
+                <button onclick="adicionarHorarioDisponivel()" style="margin:0; height:100%;">Add</button>
             </div>
-            <h3>Horários Cadastrados</h3>
             <ul id="lista-horarios-admin" style="list-style: none; padding: 0;"></ul>
-            <hr style="margin: 20px 0;">
+            <hr>
             <h3>Relatórios</h3>
             <div class="campo">
-                <label for="admin-relatorio-data">Selecione o dia para o relatório:</label>
                 <input type="date" id="admin-relatorio-data">
-                <button onclick="gerarRelatorioImagem()" style="background-color: #27ae60; margin-top: 10px;">Baixar Relatório (PNG)</button>
+                <button onclick="gerarRelatorioImagem()" style="background-color: var(--secondary-color); color: var(--dark-color); margin-top: 10px;">Baixar Relatório do Dia (PNG)</button>
             </div>
-            <hr style="margin: 20px 0;">
-            <button type="button" class="btn-resetar" onclick="limparAgendamentos()">Resetar Agenda de Pacientes</button>
+            <hr>
+            <button type="button" class="btn-resetar" onclick="limparAgendamentos()">Resetar Agenda Completa</button>
         </div>
     </div>
 
     <div id="relatorio-para-imagem-container">
-        <div id="relatorio-visual">
-            </div>
+        <div id="relatorio-visual"></div>
     </div>
 
     <script>
-        // ... (todas as suas outras funções JS continuam aqui, sem alteração)
+        // --- LÓGICA DO SELETOR VISUAL ---
+        function selecionarMotivo(elemento, valor) {
+            // Remove a classe 'selecionado' de todos os cards
+            document.querySelectorAll('.card-motivo').forEach(card => card.classList.remove('selecionado'));
+            // Adiciona a classe apenas ao clicado
+            elemento.classList.add('selecionado');
+            // Atualiza o input escondido
+            document.getElementById('input-motivo-hidden').value = valor;
+        }
+
+        // --- INICIALIZAÇÃO ---
         window.onload = function() {
             if (document.getElementById('data-agendamento').value) { mostrarHorariosDisponiveis(); }
             renderizarHorariosAdmin();
         };
-        function acessarAdmin() {
-             const senhaDigitada = prompt("Digite a senha de administrador para gerenciar os horários:");
-            if (senhaDigitada === "205021") { document.getElementById('admin-panel').classList.remove('escondido');
-            } else if (senhaDigitada !== null) { alert("Senha incorreta."); }
-        }
-        function adicionarHorarioDisponivel() {
-            const data = document.getElementById('admin-data').value;
-            const hora = document.getElementById('admin-hora').value;
-            if (!data || !hora) { alert("Por favor, preencha a data e a hora."); return; }
-            const chaveHorario = `${data}_${hora}`;
-            let horariosDisponiveis = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
-            if (horariosDisponiveis.includes(chaveHorario)) { alert("Este horário já foi cadastrado."); return; }
-            horariosDisponiveis.push(chaveHorario);
-            horariosDisponiveis.sort();
-            localStorage.setItem('horariosDisponiveis', JSON.stringify(horariosDisponiveis));
-            renderizarHorariosAdmin();
-            document.getElementById('admin-hora').value = '';
-        }
-        function removerHorarioDisponivel(chaveHorario) {
-             if (confirm(`Tem certeza que deseja remover o horário ${chaveHorario.replace('_', ' às ')}?`)) {
-                let horariosDisponiveis = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
-                horariosDisponiveis = horariosDisponiveis.filter(h => h !== chaveHorario);
-                localStorage.setItem('horariosDisponiveis', JSON.stringify(horariosDisponiveis));
-                renderizarHorariosAdmin();
-            }
-        }
-        function renderizarHorariosAdmin() {
-            const listaDiv = document.getElementById('lista-horarios-admin');
-            listaDiv.innerHTML = '';
-            const horariosDisponiveis = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
-            if (horariosDisponiveis.length === 0) {
-                listaDiv.innerHTML = '<p>Nenhum horário cadastrado.</p>'; return;
-            }
-            horariosDisponiveis.forEach(chave => {
-                const [data, hora] = chave.split('_');
-                const [ano, mes, dia] = data.split('-');
-                const dataFormatada = `${dia}/${mes}/${ano}`;
-                const item = `<li><span>${dataFormatada} às ${hora}</span><button class="btn-remover" onclick="removerHorarioDisponivel('${chave}')">Remover</button></li>`;
-                listaDiv.innerHTML += item;
-            });
-        }
-        function mostrarHorariosDisponiveis() {
-            const dataSelecionada = document.getElementById('data-agendamento').value;
-            const horariosContainer = document.getElementById('horarios-container');
-            const listaHorariosDiv = document.getElementById('lista-horarios');
-            listaHorariosDiv.innerHTML = '';
-            if (!dataSelecionada) { horariosContainer.classList.add('escondido'); return; }
-            const todosHorariosDisponiveis = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
-            const horariosDoDia = todosHorariosDisponiveis.filter(h => h.startsWith(dataSelecionada));
-            if (horariosDoDia.length === 0) {
-                listaHorariosDiv.innerHTML = '<p>Nenhum horário disponível para este dia.</p>';
-                horariosContainer.classList.remove('escondido'); return;
-            }
-            const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-            const chavesAgendadas = agendamentos.map(ag => ag.chave);
-            horariosDoDia.forEach(chaveHorario => {
-                const horario = chaveHorario.split('_')[1];
-                const isAgendado = chavesAgendadas.includes(chaveHorario);
-                const radioId = `horario-${horario.replace(':', '')}`;
-                const radioHTML = `<div><input type="radio" id="${radioId}" name="horario" value="${horario}" ${isAgendado ? 'disabled' : ''}><label for="${radioId}">${horario}</label></div>`;
-                listaHorariosDiv.innerHTML += radioHTML;
-            });
-            horariosContainer.classList.remove('escondido');
-        }
+
         function iniciarFormulario() {
             const ehPacienteAntigo = document.querySelector('input[name="paciente_antigo"]:checked').value === 'sim';
             document.getElementById('formulario-principal').classList.remove('escondido');
@@ -245,115 +365,216 @@
                 document.getElementById('dados-paciente-antigo').classList.add('escondido');
             }
         }
+
+        function mostrarHorariosDisponiveis() {
+            const dataSelecionada = document.getElementById('data-agendamento').value;
+            const horariosContainer = document.getElementById('horarios-container');
+            const listaHorariosDiv = document.getElementById('lista-horarios');
+            listaHorariosDiv.innerHTML = '';
+            
+            if (!dataSelecionada) { horariosContainer.classList.add('escondido'); return; }
+
+            const todosHorariosDisponiveis = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
+            const horariosDoDia = todosHorariosDisponiveis.filter(h => h.startsWith(dataSelecionada));
+
+            if (horariosDoDia.length === 0) {
+                listaHorariosDiv.innerHTML = '<p>Nenhum horário disponível para este dia.</p>';
+                horariosContainer.classList.remove('escondido'); return;
+            }
+
+            const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+            const chavesAgendadas = agendamentos.map(ag => ag.chave);
+
+            horariosDoDia.forEach(chaveHorario => {
+                const horario = chaveHorario.split('_')[1];
+                const isAgendado = chavesAgendadas.includes(chaveHorario);
+                const radioId = `horario-${horario.replace(':', '')}`;
+                // Estilo simples para radio button
+                const radioHTML = `
+                    <div style="margin-right:15px; margin-bottom:10px;">
+                        <input type="radio" id="${radioId}" name="horario" value="${horario}" ${isAgendado ? 'disabled' : ''}>
+                        <label for="${radioId}">${horario}</label>
+                    </div>`;
+                listaHorariosDiv.innerHTML += radioHTML;
+            });
+            horariosContainer.classList.remove('escondido');
+        }
+
         function gerarResumo() {
             const ehPacienteAntigo = document.querySelector('input[name="paciente_antigo"]:checked').value === 'sim';
             let nome, telefone;
+            
             if (ehPacienteAntigo) {
-                nome = document.getElementById('nome_antigo').value; telefone = "(Telefone já cadastrado)";
+                nome = document.getElementById('nome_antigo').value; 
+                telefone = "Já cadastrado";
             } else {
-                nome = document.getElementById('nome').value; telefone = document.getElementById('telefone').value;
+                nome = document.getElementById('nome').value; 
+                telefone = document.getElementById('telefone').value;
             }
-            const motivoSelect = document.getElementById('motivo');
-            const motivo = motivoSelect.options[motivoSelect.selectedIndex].text;
+
+            // Pega o motivo do input hidden
+            const motivo = document.getElementById('input-motivo-hidden').value;
+
+            // Pega anamnese
+            let saudeInfo = [];
+            if(document.getElementById('saude_diabetes').checked) saudeInfo.push("Diabético");
+            if(document.getElementById('saude_hipertensao').checked) saudeInfo.push("Hipertenso");
+            if(document.getElementById('saude_alergia').checked) saudeInfo.push("Alergico");
+            if(document.getElementById('saude_cardiaco').checked) saudeInfo.push("Cardíaco");
+            const textoSaude = saudeInfo.length > 0 ? saudeInfo.join(", ") : "Nenhuma observação";
+
             const dataSelecionada = document.getElementById('data-agendamento').value;
-            if (!dataSelecionada) { alert("Por favor, escolha uma data para o agendamento."); return; }
             const horarioSelecionado = document.querySelector('input[name="horario"]:checked');
-            if (!horarioSelecionado) { alert("Por favor, escolha um horário."); return; }
-            if (!nome) { alert("Por favor, preencha seu nome completo."); return; }
+
+            // Validações
+            if (!nome) { alert("Por favor, preencha seu nome."); return; }
+            if (!motivo) { alert("Por favor, selecione o motivo da visita (clique nos cards)."); return; }
+            if (!dataSelecionada) { alert("Escolha uma data."); return; }
+            if (!horarioSelecionado) { alert("Escolha um horário."); return; }
+
             const horario = horarioSelecionado.value;
             const chaveAgendamento = `${dataSelecionada}_${horario}`;
+
+            // Salva no LocalStorage
             let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
             const novoAgendamento = {
-                chave: chaveAgendamento, nome: nome, telefone: telefone, motivo: motivo, data: dataSelecionada, horario: horario
+                chave: chaveAgendamento, nome: nome, telefone: telefone, motivo: motivo, data: dataSelecionada, horario: horario, saude: textoSaude
             };
             agendamentos.push(novoAgendamento);
             localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+
+            // Formata Data
             const [ano, mes, dia] = dataSelecionada.split('-');
             const dataFormatada = `${dia}/${mes}/${ano}`;
-            const resumoHTML = `<h3>Agendamento Confirmado!</h3><p><strong>Paciente:</strong> ${nome}</p><p><strong>Telefone:</strong> ${telefone}</p><p><strong>Motivo:</strong> ${motivo}</p><p><strong>Data:</strong> ${dataFormatada}</p><p><strong>Horário:</strong> ${horario}</p><hr><p>Obrigado! O horário foi bloqueado.</p>`;
+
+            // --- GERA LINK WHATSAPP ---
+            // Substitua o numero abaixo pelo SEU numero
+            const seuNumeroWhatsApp = "5585999999999"; 
+            
+            let textoZap = `Olá Dr(a)! Gostaria de confirmar meu agendamento.%0A`;
+            textoZap += `*Nome:* ${nome}%0A`;
+            textoZap += `*Data:* ${dataFormatada} às ${horario}%0A`;
+            textoZap += `*Motivo:* ${motivo}%0A`;
+            if(saudeInfo.length > 0) textoZap += `*Obs Saúde:* ${textoSaude}`;
+
+            const linkZap = `https://wa.me/${seuNumeroWhatsApp}?text=${textoZap}`;
+
+            const resumoHTML = `
+                <h3>Agendamento Confirmado!</h3>
+                <p><strong>Paciente:</strong> ${nome}</p>
+                <p><strong>Motivo:</strong> ${motivo}</p>
+                <p><strong>Data:</strong> ${dataFormatada} - ${horario}</p>
+                <p style="font-size:0.9em; color:#666;"><strong>Obs. Saúde:</strong> ${textoSaude}</p>
+                <hr>
+                <p>Para finalizar, envie a confirmação para nossa recepção:</p>
+                <a href="${linkZap}" target="_blank" class="btn-whatsapp">
+                    Enviar Confirmação no WhatsApp 📱
+                </a>
+            `;
+            
             const resumoDiv = document.getElementById('resumo-agendamento');
             resumoDiv.innerHTML = resumoHTML;
             resumoDiv.classList.remove('escondido');
             mostrarHorariosDisponiveis();
+            
+            // Rola a tela para o resumo
+            resumoDiv.scrollIntoView({ behavior: 'smooth' });
         }
+
+        // --- FUNÇÕES DE ADMINISTRAÇÃO ---
+        function acessarAdmin() {
+            const senha = prompt("Senha do Dentista:");
+            if (senha === "205021") { document.getElementById('admin-panel').classList.remove('escondido'); }
+            else if (senha !== null) { alert("Senha incorreta."); }
+        }
+
+        function adicionarHorarioDisponivel() {
+            const data = document.getElementById('admin-data').value;
+            const hora = document.getElementById('admin-hora').value;
+            if (!data || !hora) { alert("Preencha data e hora."); return; }
+            const chave = `${data}_${hora}`;
+            let lista = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
+            if (lista.includes(chave)) { alert("Horário já existe."); return; }
+            lista.push(chave); lista.sort();
+            localStorage.setItem('horariosDisponiveis', JSON.stringify(lista));
+            renderizarHorariosAdmin();
+        }
+
+        function removerHorario(chave) {
+            if (confirm("Remover este horário?")) {
+                let lista = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
+                lista = lista.filter(h => h !== chave);
+                localStorage.setItem('horariosDisponiveis', JSON.stringify(lista));
+                renderizarHorariosAdmin();
+            }
+        }
+
+        function renderizarHorariosAdmin() {
+            const listaDiv = document.getElementById('lista-horarios-admin');
+            listaDiv.innerHTML = '';
+            const lista = JSON.parse(localStorage.getItem('horariosDisponiveis')) || [];
+            if (lista.length === 0) { listaDiv.innerHTML = '<p>Sem horários cadastrados.</p>'; return; }
+            lista.forEach(chave => {
+                const [data, hora] = chave.split('_');
+                const [a, m, d] = data.split('-');
+                listaDiv.innerHTML += `<li>${d}/${m}/${a} às ${hora} <button class="btn-remover" onclick="removerHorario('${chave}')">X</button></li>`;
+            });
+        }
+
         function limparAgendamentos() {
-            const senhaDigitada = prompt("Para resetar a agenda, por favor, digite a senha de administrador:");
-            if (senhaDigitada === null) return;
-            if (senhaDigitada === "205021") {
-                if (confirm("Senha correta. Você tem certeza que deseja apagar TODOS os agendamentos de pacientes?")) {
+            const senha = prompt("Senha Admin para resetar:");
+            if (senha === "205021") {
+                if (confirm("Apagar TUDO?")) {
                     localStorage.removeItem('agendamentos');
-                    alert("Agenda de pacientes resetada! A página será recarregada.");
                     location.reload();
                 }
-            } else { alert("Senha incorreta. A operação foi cancelada."); }
+            }
         }
 
-        // PASSO 3: Nova função para gerar o relatório como IMAGEM
+        // --- GERAR RELATÓRIO IMAGEM (ATUALIZADO) ---
         function gerarRelatorioImagem() {
-            const dataRelatorio = document.getElementById('admin-relatorio-data').value;
-            if (!dataRelatorio) {
-                alert("Por favor, selecione uma data para gerar o relatório.");
-                return;
-            }
-
-            const todosAgendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-            const agendamentosDoDia = todosAgendamentos.filter(ag => ag.data === dataRelatorio);
-
-            if (agendamentosDoDia.length === 0) {
-                alert("Não há agendamentos para o dia selecionado.");
-                return;
-            }
-
-            agendamentosDoDia.sort((a, b) => a.horario.localeCompare(b.horario));
+            const dataRel = document.getElementById('admin-relatorio-data').value;
+            if (!dataRel) { alert("Selecione a data."); return; }
+            
+            const todos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+            const doDia = todos.filter(ag => ag.data === dataRel);
+            
+            if (doDia.length === 0) { alert("Sem pacientes nesta data."); return; }
+            doDia.sort((a, b) => a.horario.localeCompare(b.horario));
 
             const container = document.getElementById('relatorio-visual');
-            const dataObj = new Date(dataRelatorio + 'T00:00:00');
-            const nomeDiaSemana = dataObj.toLocaleDateString('pt-BR', { weekday: 'long' });
-            const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+            const dataObj = new Date(dataRel + 'T00:00:00');
             
             let cardsHTML = '';
-            agendamentosDoDia.forEach(ag => {
+            doDia.forEach(ag => {
+                // Se o campo saude nao existir (agendamentos antigos), poe vazio
+                const saude = ag.saude || "Sem obs";
                 cardsHTML += `
                     <div class="card">
                         <div class="horario">${ag.horario}</div>
                         <div class="info">
                             <h4>${ag.nome}</h4>
                             <p>📞 ${ag.telefone}</p>
-                            <p><strong>Procedimento:</strong> ${ag.motivo}</p>
+                            <p><strong>Motivo:</strong> ${ag.motivo}</p>
+                            <p style="font-size:0.8em; color:#666;">Ref: ${saude}</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
 
             container.innerHTML = `
                 <div class="header">
                     <div class="header-logo">🦷</div>
-                    <div class="header-title">
-                        <h2>Clínica Odontológica</h2>
-                        <p>Relatório de Agendamentos</p>
-                    </div>
-                    <div class="header-date">
-                        <h3>${dataFormatada}</h3>
-                        <p style="text-transform: capitalize;">${nomeDiaSemana}</p>
-                    </div>
+                    <div class="header-title"><h2>Agenda do Dia</h2><p>Dr. Seu Nome</p></div>
+                    <div class="header-date"><h3>${dataObj.toLocaleDateString('pt-BR')}</h3></div>
                 </div>
                 ${cardsHTML}
             `;
 
-            // Usa a biblioteca html2canvas para tirar a "foto"
-            html2canvas(document.querySelector("#relatorio-visual"), {
-                scale: 2 // Aumenta a escala para uma imagem de melhor qualidade
-            }).then(canvas => {
-                // Converte o "canvas" (a foto) para uma imagem PNG
-                const imageURL = canvas.toDataURL("image/png");
-
-                // Cria um link temporário para fazer o download
+            html2canvas(document.querySelector("#relatorio-visual"), { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.href = imageURL;
-                link.download = `relatorio_${dataRelatorio}.png`; // Nome do arquivo
-                document.body.appendChild(link);
+                link.href = canvas.toDataURL("image/png");
+                link.download = `agenda_${dataRel}.png`;
                 link.click();
-                document.body.removeChild(link);
             });
         }
     </script>
